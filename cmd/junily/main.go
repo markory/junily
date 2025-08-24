@@ -2,22 +2,17 @@ package main
 
 import (
 	_ "embed"
-	"io/fs"
 	"log"
 	"net/http"
 
-	"github.com/markory/junily/internal/assets"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/markory/junily/internal/assets"
 )
 
 
 func main() {
 	app := fiber.New()
-
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root: http.FS(f),
-	}))
 
 	// Access file "image.png" under `static/` directory via URL: `http://<server>/static/image.png`.
 	// Without `PathPrefix`, you have to access it via URL:
