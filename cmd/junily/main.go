@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"io/fs"
 	"log"
 	"net/http"
 
@@ -14,12 +15,14 @@ import (
 func main() {
 	app := fiber.New()
 
-	// Access file "image.png" under `static/` directory via URL: `http://<server>/static/image.png`.
-	// Without `PathPrefix`, you have to access it via URL:
-	// `http://<server>/static/static/image.png`.
-	app.Use("/static", filesystem.New(filesystem.Config{
-		Root: http.FS(assets.DashboardStaticFiles),
-		PathPrefix: "static",
+	// We need to "strip" the folder so that /static maps correctly
+    subFS, err := fs.Sub(assets.StaticFiles, "dashboard")
+    if err != nil {
+        log.Fatal(err)
+    }
+
+	app.Use("/", filesystem.New(filesystem.Config{
+		Root: http.FS(subFS),
 		Browse: true,
 	}))
 

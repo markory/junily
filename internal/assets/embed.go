@@ -4,5 +4,5 @@ import (
 	"embed"
 )
 
-//go:embed dashboard
-var DashboardStaticFiles embed.FS
+//go:embed dashboard/*
+var StaticFiles embed.FS
